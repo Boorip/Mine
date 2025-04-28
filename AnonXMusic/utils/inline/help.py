@@ -1,58 +1,118 @@
+from typing import Union
+
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 from AnonXMusic import app
+from config import SUPPORT_GROUP
 
-def generate_help_buttons(_, start: int, end: int, current_page: int):
-    buttons = []
-    buttons_per_row = 3
-    for idx, i in enumerate(range(start, end + 1)):
-        if idx % buttons_per_row == 0:
-            buttons.append([])
-        buttons[-1].append(InlineKeyboardButton(
-            text=_[f"H_B_{i}"],
-            callback_data=f"help_callback hb{i}_p{current_page}"
-        ))
-    return buttons
 
-def first_page(_):
-    buttons = generate_help_buttons(_, start=1, end=15, current_page=1)
-    navigation_buttons = [
-        InlineKeyboardButton(text="ʜᴏᴍᴇ", callback_data="back_to_main"),
-        InlineKeyboardButton(text="ɴᴇxᴛ »", callback_data="help_next_2")
+def help_pannel(_, START: Union[bool, int] = None):
+    first = [
+        InlineKeyboardButton(
+            text=_["CLOSEMENU_BUTTON"], callback_data=f"close"
+        )
     ]
-    buttons.append(navigation_buttons)
-    return InlineKeyboardMarkup(buttons)
-
-def second_page(_):
-    buttons = generate_help_buttons(_, start=16, end=30, current_page=2)
-    navigation_buttons = [
-        InlineKeyboardButton(text="« ʙᴀᴄᴋ", callback_data="help_prev_1"),
-        InlineKeyboardButton(text="ʜᴏᴍᴇ", callback_data="back_to_main")
+    second = [
+        InlineKeyboardButton(
+            text=_["BACK_BUTTON"],
+            callback_data=f"settingsback_helper",
+        ),
+        InlineKeyboardButton(
+            text=_["CLOSEMENU_BUTTON"], callback_data=f"close"
+        ),
     ]
-    buttons.append(navigation_buttons)
-    return InlineKeyboardMarkup(buttons)
+    mark = second if START else first
+    upl = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text="ᴀᴅᴍɪɴ",
+                    callback_data="help_callback hb1",
+                ),
+                InlineKeyboardButton(
+                    text="ᴀᴜᴛʜ",
+                    callback_data="help_callback hb2",
+                ),
+                InlineKeyboardButton(
+                    text="ʙʟᴀᴄᴋʟɪsᴛ",
+                    callback_data="help_callback hb3",
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    text="ʙʀᴏᴀᴅᴄᴀsᴛ",
+                    callback_data="help_callback hb4",
+                ),
+                InlineKeyboardButton(
+                    text="ɢʙᴀɴ",
+                    callback_data="help_callback hb12",
+                ),
+                InlineKeyboardButton(
+                    text="ʟʏʀɪᴄs",
+                    callback_data="help_callback hb5",
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    text="ᴩɪɴɢ",
+                    callback_data="help_callback hb7",
+                ),
+                InlineKeyboardButton(
+                    text="ᴩʟᴀʏ",
+                    callback_data="help_callback hb8",
+                ),
+                InlineKeyboardButton(
+                    text="ᴩʟᴀʏʟɪsᴛ",
+                    callback_data="help_callback hb6",
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    text="ᴠɪᴅᴇᴏᴄʜᴀᴛs",
+                    callback_data="help_callback hb10",
+                ),
+                InlineKeyboardButton(
+                    text="sᴛᴀʀᴛ",
+                    callback_data="help_callback hb11",
+                ),
+                InlineKeyboardButton(
+                    text="sᴜᴅᴏ",
+                    callback_data="help_callback hb9",
+                ),
+            ],
+            mark,
+        ]
+    )
+    return upl
 
-def help_back_markup(_, current_page):
-    return InlineKeyboardMarkup(
+
+def help_back_markup(_):
+    upl = InlineKeyboardMarkup(
         [
             [
                 InlineKeyboardButton(
                     text=_["BACK_BUTTON"],
-                    callback_data=f"help_back_{current_page}"
+                    callback_data=f"settings_back_helper",
                 ),
                 InlineKeyboardButton(
-                    text=_["CLOSE_BUTTON"],
-                    callback_data="close"
+                    text=_["CLOSE_BUTTON"], callback_data=f"close"
+                ),
+                InlineKeyboardButton(
+                    text="• sᴜᴩᴩᴏʀᴛ •", url=f"{SUPPORT_GROUP}"
                 ),
             ]
         ]
     )
+    return upl
+
 
 def private_help_panel(_):
-    return [
+    buttons = [
         [
             InlineKeyboardButton(
-                text=_["S_B_4"],
-                url=f"https://t.me/{app.username}?start=help"
+                text=_["S_B_1"],
+                url=f"https://t.me/{app.username}?start=help",
             ),
         ],
     ]
+    return buttons
